@@ -1,0 +1,67 @@
+Notes:
+
+The whole process:
+1Get the data
+2Check the columns
+3Check the len
+4Check info
+5Describe the columns
+6Choose the columns(using correlation. but the data here are catagories. So need to use groupby to see the differences in the different catagories. 
+7delete some columns and fill the missing values:
+    if the columns has little variance or too many missing values(more than 10%(if one column is 10% and we have 5 columns like this, we will have (10%-41%) rows having missing values)).
+    calculation: 
+        1-0.9**5 ~= 0.41
+    And how we gonna fill the empty values here? if we choose mean. The mean after change will be the same, the variance will become (1-missing rate) * old variance.
+    calculation: 
+        Vold = 1/n * sum((Xoldi - mean(Xold))^2)
+        Vnew = 1/N * sum((Xnewi - mean(Xnew))^2)
+        sum((Xnewi - mean(Xnew))^2) = sum((Xoldi - mean(Xold))^2)
+        n/N = 1 - missing rate
+    one good way to do missing data is do regression and also do a normal disturbution with the fitting outcome. If only do one regression, the variance will be underestimate with a rate at R square. So we need to use normal distrubition to get a better estimate for variance.
+    from:www.stat.columbia.edu/~gelman/arm/missing.pdf
+8Next create new features:
+    I could understand why here we need to create a Title feature. This is how we use the Name. Don't know why to set the age to catagory. And Age * Class doesnt seems a feature can be explained. Maybe it will help in LM, but in some other model, the features dont need to be in the linear relationship, cause the model could do this.
+    Also, use number to replace catafory is not a good idea. For example, change Mr=1, Miss=2, Mrs=3. but why Mr is more close to Miss than to Mrs?
+    About Age band. Why cut to these? in my idea, there is no reason to do equal cut.
+
+
+detailed:
+
+1. a good way to manage datasets. very clear
+
+combine = [train,test]
+for dataset in combine:
+    pass
+
+2. a good way to do groupby in python. never thought to do this.
+
+train_df[['Parch','Survived']].groupby(['Parch'],as_index=False).mean().sort_values(by='Survived',ascending=False)
+
+3. need to get familiar with ragex
+
+dataset['Title'] = dataset.Name.str.extract('([A-Za-z]+)\.', expand=False)
+
+4. replace all the value to new one, simple, i would use for loop before i see this.
+
+dataset['Title'].replace('Mme','Mrs')
+
+5. mapping
+
+title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
+dataset['Title'].map(title_mapping)
+dataset['Sex'] = dataset['Sex'].map( {'female': 1, 'male': 0} ).astype(int)
+
+
+6. fillna & dropna
+
+dataset['Title'].fillna(0)
+dataset[(dataset['Sex'] == i) & (dataset['Pclass'] == j+1)]['Age'].dropna()
+
+7. cut to equal
+
+pd.cut(train_df['Age'], 5)
+
+
+
+
+
