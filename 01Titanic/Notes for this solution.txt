@@ -23,6 +23,8 @@ The whole process:
     I could understand why here we need to create a Title feature. This is how we use the Name. Don't know why to set the age to catagory. And Age * Class doesnt seems a feature can be explained. Maybe it will help in LM, but in some other model, the features dont need to be in the linear relationship, cause the model could do this.
     Also, use number to replace catafory is not a good idea. For example, change Mr=1, Miss=2, Mrs=3. but why Mr is more close to Miss than to Mrs?
     About Age band. Why cut to these? in my idea, there is no reason to do equal cut.
+    
+    After trying and thinking, the best model is always related to the data itself. There is no simple better way to do this.
 
 
 detailed:
